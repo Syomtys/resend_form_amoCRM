@@ -1,0 +1,107 @@
+<html>
+	<head>
+		<title>test</title>
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
+		<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		
+		
+		<div class='body_container'>
+			<div class='window_block'>
+				<form method="post" onsubmit="return false" id="form_action">
+					<h3>оформление заказа</h3>
+					<input id="name" name='name' required type="text" pattern="[а-яёА-ЯЁ]*" placeholder="имя(рус.)"><br>
+					<input id="email" name='email' required type="text" pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+" placeholder="example@email.com"><br>
+					<input id="phone" name='phone' required type="text" pattern="\+7[0-9]{10}" placeholder="+79998887766" value="+7"><br>
+					<input id="price" pattern="[0-9]*" name='price' required type="text"  placeholder="price"><br>
+					<input type='submit' value='отправить'/><br>
+				</form>
+			</div>
+		</div>
+		
+		<script>
+			$('document').ready(function(){
+				$('#form_action').on('submit',function () {
+					let data_action_form = $(this).serialize();
+					$.post('amo.php', data_action_form, function(data){
+						console.log(data);
+						var response = JSON.parse(data);
+						console.log(response);
+						if (response.valid) {
+							console.log(1);
+							$('input[type=submit]').remove();
+							$('.window_block form').append('<span>данные отправлены</span>');
+							$("input").val("");
+						} else {
+							console.log(0);
+							$('.window_block form').append('<span>данные не прошли валидацию<br>проверьте и повторите попытку</span>');
+							setTimeout(function() {
+								$('.window_block form span').remove();
+							}, 5000);
+						}
+					});
+				});
+			});
+		</script>
+		
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.window_block form span{
+				color: #e32c63;
+			}
+			form h3{
+				width: 45vw;
+				margin-bottom: 10px;
+			}
+			input[type=text]{
+				margin-bottom: 10px;
+				width: 45vw;
+				padding: 4px;
+				border-radius: 3px;
+				background: #6049d4;
+				text-align: center;
+				font-size: 12px;
+				color: #e32c63;
+			}
+			input[type=submit]{
+				padding: 4px;
+				border-radius: 3px;
+				background: #e32c63;
+				color: #111b74;
+			}
+			input {
+			  outline: none;
+			  border: none;
+			}
+			.body_container{
+				text-align: center;
+				width: 100vw;
+				height: 100vh;
+				background: #111b74;
+				color: #6049d4;
+				display: flex;
+				align-items: center; 
+				justify-content: center;
+			}
+			.window_block form{
+				
+			}
+			.window_block{
+				background: #2c2489;
+				border-radius: 3px;
+				width: 80vw;
+				min-height: 50vw;
+				display: flex;
+				align-items: center; 
+				justify-content: center;
+			}
+		</style>
+	</body>
+</html>
+
+
